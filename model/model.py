@@ -2,8 +2,9 @@
 # -*-coding:utf-8 -*-
 
 from peewee import *
-from config.config import database as dbconfig
 from datetime import datetime
+
+from config.config import database as dbconfig
 
 db = MySQLDatabase(dbconfig['database'], user=dbconfig['user'], passwd=dbconfig['password'])
 
@@ -27,11 +28,11 @@ class BlogDream(BaseModel):
     user = ForeignKeyField(BlogUser, related_name='blogdreams')
     pubDate = DateTimeField(default=datetime.now())
     isopen = CharField(default='1', max_length=2)
-    opendate = DateTimeField(default=datetime.now())
+    openDate = DateTimeField(default=datetime.now())
 
     class Meta:
         db_table = 'Blog_Dream'
-        order_by = ('-pubdate',)
+        order_by = ('-pubDate',)
         indexes = (
             (('title',), False),
         )
