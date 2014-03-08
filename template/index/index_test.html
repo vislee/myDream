@@ -1,0 +1,20 @@
+{% extends "../base.html" %}
+{% block main %}
+  <div class="main-page">
+      {% for d in dreams %}
+      <div class="panel panel-default post">
+        <div class="panel-body">
+          <hgroup>
+            <div class="row">
+              <div class="col-md-11">
+                  <h1><a href="/">
+                                {{ d["title"] }}
+                  </a></h1>
+              </div>
+            </div>
+          </hgroup>
+        </div>
+      </div>
+      {% end %}
+   </div>
+{% end %}

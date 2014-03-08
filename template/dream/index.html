@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+{% block main %}
+    <div class="main-page">
+        <div class="panel panel-default post">
+            <div class="panel-body">
+                <hgroup>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h1>
+                                {{ dream["title"] }}
+                            </h1>
+                        </div>
+                    </div>
+                    <span class="glyphicon glyphicon-calendar"> {{ dream['pub_date'] }}</span>
+                </hgroup>
+                <hr>
+                <p class="">{% raw dream['content'] %} 
+            </div>
+        </div>
+    </div>
+{% end %}
+
+{% block side %}
+  {% module RecentDream(side['recent_dream']) %}
+  {% module Tag(side['tags']) %}
+{% end %}
+{% block ad2%}
+<h3>我们结婚吧！！！</h3>
+{% end %}

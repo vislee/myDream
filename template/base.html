@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include public/head.html %}
+  </head>
+  <body>
+    {% include public/masthead.html %}
+    <div id="wrap" class="container">
+      <div class="">
+        <br>
+        <br>
+        <br>
+        {% block ad %}
+        {% end %}
+        <br>
+        <br>
+      </div>
+    {% block container %}
+      <div id="main" class="col-md-8 col-sm-7">
+        {% block main %}
+        {% end %}
+      </div>
+      <div id="side" class="col-md-4 col-sm-5">
+        {% block search %}
+          <form class="search col-md-5" action="/dream/search" method="get">
+               <input type="search" name="q" placeholder="Search" class="form-control" role="search">
+          </form>
+          <br>
+          <hr>
+        {% end %}
+        {% block side %}
+          {% module RecentDream(side['recent_dream']) %}
+          {% module Tag(side['tags']) %}
+        {% end %}
+        {% block ad2%}
+        {% end %}
+      </div>
+    {% end %}
+    </div>
+    <hr>
+    {% include public/footer.html %}
+  </body>
+</html>
