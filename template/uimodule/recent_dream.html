@@ -2,8 +2,8 @@
     <div class="panel-heading">最新文章</div>
     <ul class="list-group">
         {% for dream in dreams %}
-            <a href="/dream/id/{{ dream['id'] }}" class="list-group-item">
-                <p class="list-group-item-text text-primary"><b>{{ dream['title'] }}</b></p>
+            <a href="/dream/id/{{ dream.id }}" class="list-group-item">
+                <p class="list-group-item-text text-primary"><b>{{ dream.title }}</b></p>
             </a>
         {% end %}
     </ul>

@@ -6,7 +6,8 @@
 
 
 import tornado.web
-from model.model import BlogUser, BlogDream, BlogTag, BlogPostTag
+from peewee import DoesNotExist, fn
+from model.model import BlogUser, BlogDream, BlogTag, BlogDreamTag
 from config.config import pageConf
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -21,15 +22,14 @@ class BaseHandler(tornado.web.RequestHandler):
 
 
     def get_current_user(self):
-        uid = self.get_secure_cookie('usereMail')
-        if not uid:
+        email = self.get_secure_cookie('usereMail')
+        if not email:
             return None
         else:
             try:
-                pass
-                user = BlogUser.get(BlogUser.id == uid)
+                user = BlogUser.get(BlogUser.email == email)
             except DoesNotExist:
-                self.clear_cookie('uid')
+                self.clear_cookie('usereMail')
             return user
 
 
@@ -37,8 +37,9 @@ class BaseHandler(tornado.web.RequestHandler):
         side = {
         "recent_dream": BlogDream.select().limit(pageConf["RECENT_DREAM_NUM"]),
         # "recent_dream":[{"id":"3","title":"liwq"},{"id":"5","title":"vince"}],
-        "tags":BlogTag.select().limit(pageConf["TAG_NUM"])
+        # "tags":BlogTag.select().limit(pageConf["TAG_NUM"])
         # "tags":[{"tag":"python","count":3},{"tag":"tornado","count":5}]
+        "tags": BlogTag.select(BlogTag, fn.Count(BlogDream.id).alias('count')).join(BlogDreamTag).join(BlogDream).group_by(BlogTag)
         }
         return side
 

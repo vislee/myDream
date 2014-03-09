@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         {% for tag in tags %}
-            <a href="/tag/{{ tag['tag'] }}">{{ tag['tag'] }}<span class="badge">{{ tag['count'] }}</span></a>&nbsp&nbsp
+            <a href="/tag/{{ tag.tag }}">{{ tag.tag }}<span class="badge">{{ tag.count }}</span></a>&nbsp&nbsp
         {% end %}
     </div>
 </div>

@@ -3,13 +3,16 @@
 
 import base
 import tornado.web
+import model
+from model.model import BlogUser, BlogDream, BlogTag, BlogDreamTag
+from config.config import pageConf
+
 
 class IndexHandler(base.BaseHandler):
     # @tornado.web.authenticated
     def get(self, id):
-        print id
-        dream = {"id":3, "title":"hello test","pub_date":"20141012 01:05:03","content":"i am vince ... this is test content. test test test test"}
-        self.render("dream/index.html", title="", dream=dream, side=self.get_side())
+        dream = BlogDream.get(BlogDream.id == id)
+        self.render("dream/index.html", title=dream.title, dream=dream, side=self.get_side())
 
     def post(self, args, **argList):
         pass
@@ -22,5 +25,26 @@ class AddHandler(base.BaseHandler):
         self.render("dream/add.html", title="记录", side=self.get_side(), tags=tts)
 
 
-    def post(self, context):
-	    pass
+    @tornado.web.authenticated
+    def post(self):
+        title = self.get_argument("title", "i have a dream")
+        content = self.get_argument("content", "i have a dream")
+        tags = self.get_argument("tags", "dream,")
+        eMail = email = self.get_secure_cookie('usereMail')
+        user = BlogUser.get(BlogUser.email==eMail)
+        dream = BlogDream.create(title=title, content=content, user=user)
+        model.saveTag(tags, dream.id)
+        self.redirect("/dream/id/"+str(dream.id))
+
+
+
+
+class TagHandler(base.BaseHandler):
+    def get(self, tag, page=1):
+        p = BlogDream.select(BlogDream).join(BlogDreamTag).join(BlogTag).where(BlogTag.tag == tag).\
+            paginate(int(page), pageConf['DREAM_NUM'])
+        nav = {
+            'model': 'tag/' + tag,
+            'num': BlogDream.select(BlogDream).join(BlogDreamTag).join(BlogTag).where(BlogTag.tag == tag).count(),
+        }
+        self.render("tag/index.html", dreams=p, title=tag, side=self.get_side(), nav=nav)

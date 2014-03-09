@@ -24,6 +24,11 @@ class Tag(tornado.web.UIModule):
 class PageNav(tornado.web.UIModule):
     def render(self, nav, show=False):
         if show:
+            if nav['num'] % pageConf['DREAM_NUM'] != 0:
+                nav['num'] = nav['num'] // pageConf['DREAM_NUM'] + 1
+            else:
+                nav['num'] = nav['num'] // pageConf['DREAM_NUM']
+            # if nav['num'] != 1:
             return self.render_string("uimodule/page_nav.html", nav=nav)
         else:
             return ""

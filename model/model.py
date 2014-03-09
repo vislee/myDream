@@ -3,7 +3,8 @@
 
 from peewee import *
 from datetime import datetime
-
+# import sys
+# sys.path.append("../")
 from config.config import database as dbconfig
 
 db = MySQLDatabase(dbconfig['database'], user=dbconfig['user'], passwd=dbconfig['password'])
@@ -43,16 +44,19 @@ class BlogTag(BaseModel):
         db_table = 'Blog_Tag'
 
 
-class BlogPostTag(BaseModel):
+class BlogDreamTag(BaseModel):
     dream = ForeignKeyField(BlogDream, related_name='blogdreams')
     tag = ForeignKeyField(BlogTag, related_name='blogtags')
 
     class Meta:
-        db_table = 'Blog_Post_Tag'
+        db_table = 'Blog_Dream_Tag'
 
 
-if __name__ == '__main__':
+def main():
     BlogUser.create_table()
     BlogDream.create_table()
     BlogTag.create_table()
-    BlogPostTag.create_table()
+    BlogDreamTag.create_table()
+
+if __name__ == '__main__':
+    main()

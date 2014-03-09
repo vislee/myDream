@@ -4,22 +4,14 @@
 import base
 import tornado.web
 from config.config import pageConf, aboutMe
-# from model.model import BlogUser, BlogDream, BlogTag, BlogPostTag
+from model.model import BlogUser, BlogDream, BlogTag
 
 class MainHandler(base.BaseHandler):
     def get(self, page=1):
-        dreams = BlogDream.paginate(int(page), pageConf['POST_NUM'])
-        # dreams = [{"id":1, "title":"test_1","pub_date":"20131212 01:02:03","content":"i am liwq ... this is test content..."},
-        #           {"id":2, "title":"test_2","pub_date":"20141012 01:05:03","content":"i am vince ... this is test content..."},
-        #           {"id":3, "title":"test_2","pub_date":"20141012 01:05:03","content":"i am vince ... this is test content..."},
-        #           {"id":4, "title":"test_2","pub_date":"20141012 01:05:03","content":"i am vince ... this is test content..."},
-        #           {"id":5, "title":"test_2","pub_date":"20141012 01:05:03","content":"i am vince ... this is test content..."},
-        #           {"id":6, "title":"test_2","pub_date":"20141012 01:05:03","content":"i am vince ... this is test content..."},
-        #           {"id":7, "title":"test_2","pub_date":"20141012 01:05:03","content":"i am vince ... this is test content..."},]
+        dreams = BlogDream.select().paginate(int(page), int(pageConf['DREAM_NUM']))
         nav = {
             'model': 'index',
             'num': BlogDream.select().count(),
-            # 'num': 12,
         }
         sides = self.get_side()
         self.render('index/index.html', title="首页", dreams=dreams, side=sides, nav=nav)
@@ -37,9 +29,12 @@ class LoginHandler(base.BaseHandler):
     def post(self, *args, **kwargs):
         eMail = self.get_argument("email", "")
         pswd = self.get_argument("pswd", "")
+        print eMail
+        print pswd
         # 验证用户名和密码
         # if eMail.startswith("liwq"):
-        blogUser = BlogUser.select().where(email=eMail, password=pswd)
+        blogUser = BlogUser.select().where(BlogUser.email==eMail, BlogUser.password==pswd)
+        if blogUser.count() == 1:
             self.set_secure_cookie("usereMail", str(eMail))
             # print "eMail is %s" %(str(eMail))
             self.redirect(self.get_argument("next", "/"))

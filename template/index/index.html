@@ -7,19 +7,20 @@
                 <hgroup>
                     <div class="row">
                         <div class="col-md-11">
-                            <h1><a href="/dream/id/{{ dream['id'] }}">
-                                {{ dream["title"] }}
+                            <h1><a href="/dream/id/{{ dream.id }}">
+                                {{ dream.title }}
                             </a></h1>
                         </div>
                     </div>
-                    <span class="glyphicon glyphicon-calendar"> {{ dream['pub_date'] }}</span>
+                    <span class="glyphicon glyphicon-calendar"> {{ dream.pubDate }}</span>
                 </hgroup>
                 <hr>
-                <p class="">{% raw dream['content'][0:250] %} 
+                <p class="">{% raw dream.content[0:200] %} 
             </div>
         </div>
         {% end %}
     </div>
+    {% module PageNav(nav=nav, show=True) %}
 {% end %}
 
 {% block side %}
