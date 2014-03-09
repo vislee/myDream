@@ -32,3 +32,5 @@ pageConf = {
     'RANDOM_DREAM_NUM': 6,
     'TAG_NUM': 100,
 }
+
+aboutMe = "An IT craftsmen -- by vis lee"
